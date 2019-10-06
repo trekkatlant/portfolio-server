@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import config from '../config/data';
 const db = require('../db');
 
-const User = db.define({
+const User = db.define('user',{
 	firstname :{
 		type: String,
 		required: true,

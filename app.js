@@ -7,12 +7,19 @@ let app = express();
 
 //default route
 app.use(cors());
+app.use('/', router);
+
 app.get('/', (req, res, next)=> {
 	res.status(200).send("Default route");
 })
 
-app.listen(port, () => {
-	console.log('Server connected on port' + port);
-});
+if(db){
+	app.listen(port, () => {
+		console.log('Server connected on port' + port);
+	});
+else {
+	console.log('Failed to connect to database');
+}
+
 
 module.exports=app;
