@@ -44,5 +44,44 @@ auth.post('/signup', [
 	
 });
 
+auth.post('/login', (req, res, next) => {
+	User.findOne({email: req.body.email})
+		.exec(function(err, user) {
+			if(err) {
+				return callback(err)
+			}
+			else if(!user) {
+				var err = new Error('User not found!');
+				err.status = 401;
+				return callback(err);
+			}
+			bcrypt.compare(req.body.password, user.password, function(err, result) {
+				if(result === true) {
+					return callback(null, user);
+				}
+				else{
+					return callback();
+				}
+			})
+		});
+});
+
+auth.get('/logout', (req, res, next) {
+	if(req.session) {
+		req.session.destroy((err) {
+			if(err) {
+				return next(err);
+			}
+			else {
+				return res.redirect('/');
+			}
+		});
+	}
+});
+
+module.exports = auth;
+
+			
+
 	
 	
